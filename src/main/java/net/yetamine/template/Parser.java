@@ -36,9 +36,12 @@ public interface Parser<R> {
      *
      * <p>
      * This method consumes the next part of the input and updates both
-     * {@link #position()} and {@link #done()} accordingly. It may 
-     * 
+     * {@link #position()} and {@link #done()} accordingly. It may
+     *
      * @return the result of the parsing
+     *
+     * @throws TemplateSyntaxException
+     *             if the parser fails to parse the template
      */
     R next();
 

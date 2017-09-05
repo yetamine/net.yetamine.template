@@ -43,6 +43,9 @@ public interface TemplateParser extends Parser<Template> {
      *            the callback to invoke. It must not be {@code null}.
      *
      * @return this instance
+     *
+     * @throws TemplateSyntaxException
+     *             if the parser fails to parse the template
      */
     <R> R next(TemplateCallback<? extends R> callback);
 
@@ -51,6 +54,11 @@ public interface TemplateParser extends Parser<Template> {
      * the callback, thus producing template fragments as proceeding forward.
      *
      * @return the next template fragment, or {@code null} on {@link #done()}
+     *
+     * @throws TemplateSyntaxException
+     *             if the parser fails to parse the template
+     *
+     * @see net.yetamine.template.Parser#next()
      */
     default Template next() {
         return next(TemplateFactory.instance());

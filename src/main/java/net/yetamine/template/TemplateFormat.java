@@ -74,6 +74,9 @@ public interface TemplateFormat {
      *            the input to parse. It must not be {@code null}.
      *
      * @return the template representation
+     *
+     * @throws TemplateSyntaxException
+     *             if the parser fails to parse the template
      */
     default Template parse(String template) {
         return TemplateSequence.composition(parser(template));
@@ -94,6 +97,9 @@ public interface TemplateFormat {
      *            It must not be {@code null}.
      *
      * @return the resolved value of the template
+     *
+     * @throws TemplateSyntaxException
+     *             if the parser fails to parse the template
      */
     default String resolve(String template, Function<? super String, String> resolver) {
         return parse(template).apply(resolver);

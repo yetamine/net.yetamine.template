@@ -80,6 +80,9 @@ public final class TemplateSequence implements Template {
      *            the source of the templates. It must not be {@code null}.
      *
      * @return an instance representing the composition of parsed templates
+     *
+     * @throws TemplateSyntaxException
+     *             if the parser fails to parse the template
      */
     public static Template composition(TemplateParser parser) {
         final Template head = parser.next();

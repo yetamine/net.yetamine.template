@@ -24,6 +24,10 @@ import java.util.Objects;
  * <p>
  * This implementation allows templates with references surrounded with a pair
  * of non-empty brackets, where the opening bracket occurrence can be escaped.
+ * The nature of the format excludes {@link TemplateSyntaxException} as any
+ * input can be parsed as a valid template. A custom {@link TemplateCallback}
+ * implementation used with the parser may still throw such an exception when
+ * some fragment does not satisfy additional constraints.
  */
 public final class Interpolation implements TemplateFormat {
 
