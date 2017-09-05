@@ -49,7 +49,7 @@ public final class TemplateFactory implements TemplateCallback<Template> {
      * @see net.yetamine.template.TemplateCallback#skipped(java.lang.String)
      */
     public Template skipped(String value) {
-        return TemplateConstant.instance(value, "");
+        return constant(value, "");
     }
 
     /**
