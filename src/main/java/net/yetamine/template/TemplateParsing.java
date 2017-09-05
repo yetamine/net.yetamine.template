@@ -18,8 +18,6 @@ package net.yetamine.template;
 
 import java.util.Objects;
 
-import net.yetamine.template.TemplateParser.Callback;
-
 /**
  * Adapts a {@link TemplateParser} to a generic parser with the given callback.
  *
@@ -31,7 +29,7 @@ public final class TemplateParsing<R> implements Parser<R> {
     /** Parent parser. */
     private final TemplateParser parser;
     /** Bound parsing callback. */
-    private final TemplateParser.Callback<? extends R> callback;
+    private final TemplateCallback<? extends R> callback;
 
     /**
      * Creates a new instance.
@@ -41,7 +39,7 @@ public final class TemplateParsing<R> implements Parser<R> {
      * @param visitor
      *            the parsing callback. It must not be {@code null}.
      */
-    public TemplateParsing(TemplateParser parent, Callback<? extends R> visitor) {
+    public TemplateParsing(TemplateParser parent, TemplateCallback<? extends R> visitor) {
         callback = Objects.requireNonNull(visitor);
         parser = Objects.requireNonNull(parent);
     }

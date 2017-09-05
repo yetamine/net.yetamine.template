@@ -224,19 +224,19 @@ public final class Interpolation implements TemplateFormat {
         }
 
         /**
-         * @see net.yetamine.template.TemplateParser#next(net.yetamine.template.TemplateParser.Callback)
+         * @see net.yetamine.template.TemplateParser#next(net.yetamine.template.TemplateCallback)
          */
-        public <R> R next(Callback<? extends R> callback) {
+        public <R> R next(TemplateCallback<? extends R> callback) {
             Objects.requireNonNull(callback); // Actually not necessary
             assert ((0 <= position) && (position <= input.length()));
             assert ((0 <= definitionOpen) && (definitionOpen <= definitionDone) && (definitionDone <= input.length()));
 
             if (done) {
-                return callback.done();
+                return callback.none();
             }
 
             if (position == input.length()) { // Reached the end, but not indicated 'done' yet
-                final R result = input.isEmpty() ? callback.literal(input) : callback.done();
+                final R result = input.isEmpty() ? callback.literal(input) : callback.none();
                 done = true; // Do not emit anything anymore
                 return result;
             }

@@ -17,22 +17,22 @@
 package net.yetamine.template;
 
 /**
- * Implements the default parsing callback.
+ * Implements the default callback that serves as a template factory.
  *
  * <p>
  * All methods return instances of standard {@link Template} implementations,
- * except for {@link #done()} that returns {@code null}, which allows to use
+ * except for {@link #none()} that returns {@code null}, which allows to use
  * simplified termination conditions with this callback implementation.
  */
-public final class TemplateFactoryCallback implements TemplateParser.Callback<Template> {
+public final class TemplateFactory implements TemplateCallback<Template> {
 
     /** Sole instance of this class. */
-    private static final TemplateFactoryCallback INSTANCE = new TemplateFactoryCallback();
+    private static final TemplateFactory INSTANCE = new TemplateFactory();
 
     /**
      * Creates a new instance.
      */
-    private TemplateFactoryCallback() {
+    private TemplateFactory() {
         // Default constructor
     }
 
@@ -41,26 +41,26 @@ public final class TemplateFactoryCallback implements TemplateParser.Callback<Te
      *
      * @return an instance
      */
-    public static TemplateParser.Callback<Template> instance() {
+    public static TemplateCallback<Template> instance() {
         return INSTANCE;
     }
 
     /**
-     * @see net.yetamine.template.TemplateParser.Callback#skipped(java.lang.String)
+     * @see net.yetamine.template.TemplateCallback#skipped(java.lang.String)
      */
     public Template skipped(String value) {
         return TemplateConstant.instance(value, "");
     }
 
     /**
-     * @see net.yetamine.template.TemplateParser.Callback#literal(java.lang.String)
+     * @see net.yetamine.template.TemplateCallback#literal(java.lang.String)
      */
     public Template literal(String value) {
         return TemplateLiteral.of(value);
     }
 
     /**
-     * @see net.yetamine.template.TemplateParser.Callback#constant(java.lang.String,
+     * @see net.yetamine.template.TemplateCallback#constant(java.lang.String,
      *      java.lang.String)
      */
     public Template constant(String definition, String value) {
@@ -68,7 +68,7 @@ public final class TemplateFactoryCallback implements TemplateParser.Callback<Te
     }
 
     /**
-     * @see net.yetamine.template.TemplateParser.Callback#reference(java.lang.String,
+     * @see net.yetamine.template.TemplateCallback#reference(java.lang.String,
      *      java.lang.String)
      */
     public Template reference(String definition, String reference) {
@@ -76,9 +76,9 @@ public final class TemplateFactoryCallback implements TemplateParser.Callback<Te
     }
 
     /**
-     * @see net.yetamine.template.TemplateParser.Callback#done()
+     * @see net.yetamine.template.TemplateCallback#none()
      */
-    public Template done() {
+    public Template none() {
         return null;
     }
 }

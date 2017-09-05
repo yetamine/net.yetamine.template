@@ -29,69 +29,6 @@ package net.yetamine.template;
 public interface TemplateParser extends Parser<Template> {
 
     /**
-     * Defines a callback for the parser that shall react on parsing events.
-     *
-     * @param <R>
-     *            the type of the callback result
-     */
-    interface Callback<R> {
-
-        /**
-         * Handles an occurrence of an insignificant input part.
-         *
-         * @param value
-         *            the part of the input that has been skipped. It must not
-         *            be {@code null}.
-         *
-         * @return the result to pass
-         */
-        R skipped(String value);
-
-        /**
-         * Handles an occurrence of a literal.
-         *
-         * @param value
-         *            the literal value. It must not be {@code null}.
-         *
-         * @return the result to pass
-         */
-        R literal(String value);
-
-        /**
-         * Handles an occurrence of a constant.
-         *
-         * @param definition
-         *            the definition of the constant. It must not be
-         *            {@code null}.
-         * @param value
-         *            the value of the constant. It must not be {@code null}.
-         *
-         * @return the result to pass
-         */
-        R constant(String definition, String value);
-
-        /**
-         * Handles an occurrence of a reference.
-         *
-         * @param definition
-         *            the definition of the constant. It must not be
-         *            {@code null}.
-         * @param reference
-         *            the reference. It must not be {@code null}.
-         *
-         * @return the result to pass
-         */
-        R reference(String definition, String reference);
-
-        /**
-         * Indicates the parsing has been finished.
-         *
-         * @return the result to pass
-         */
-        R done();
-    }
-
-    /**
      * Parses the next part of the input.
      *
      * <p>
@@ -107,17 +44,16 @@ public interface TemplateParser extends Parser<Template> {
      *
      * @return this instance
      */
-    <R> R next(Callback<? extends R> callback);
+    <R> R next(TemplateCallback<? extends R> callback);
 
     /**
-     * Parses the next part of the input with the default callback that produces
-     * appropriate {@link Template} instances using the default implementations,
-     * except for <i>done</i> event, which returns {@code null}.
+     * Parses the next part of the input using the {@link TemplateFactory} as
+     * the callback, thus producing template fragments as proceeding forward.
      *
      * @return the next template fragment, or {@code null} on {@link #done()}
      */
     default Template next() {
-        return next(TemplateFactoryCallback.instance());
+        return next(TemplateFactory.instance());
     }
 
     /**
@@ -131,7 +67,7 @@ public interface TemplateParser extends Parser<Template> {
      *
      * @return the adapter
      */
-    default <R> Parser<R> with(Callback<? extends R> callback) {
+    default <R> Parser<R> with(TemplateCallback<? extends R> callback) {
         return new TemplateParsing<>(this, callback);
     }
 }
