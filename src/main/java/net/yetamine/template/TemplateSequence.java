@@ -130,7 +130,7 @@ public final class TemplateSequence implements Template {
      */
     @Override
     public int hashCode() {
-        return fragments.hashCode();
+        return Arrays.hashCode(fragments);
     }
 
     /**

@@ -54,7 +54,7 @@ public final class Interpolation implements TemplateFormat {
         }
 
         if (placeholderEscaping.contains(placeholderOpening)) {
-            final String f = "Escaping sequence must not contain the opening bracket.";
+            final String f = "Escaping sequence '%s' must not contain the opening bracket '%s'.";
             throw new IllegalArgumentException(String.format(f, placeholderEscaping, placeholderOpening));
         }
 
