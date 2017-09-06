@@ -101,6 +101,8 @@ public interface TemplateFormat {
      *
      * @throws TemplateSyntaxException
      *             if the parser fails to parse the template
+     * @throws TemplateResolvingException
+     *             if the resolving fails
      */
     default String resolve(String template, Function<? super String, String> resolver) {
         final TemplateCallback<String> callback = new ResolvingCallback(resolver);
@@ -120,7 +122,7 @@ public interface TemplateFormat {
         }
 
         // Well, there were at least two fragments
-        final StringBuilder result = new StringBuilder().append(head).append(next);
+        final StringBuilder result = new StringBuilder(template.length()).append(head).append(next);
         for (String current; (current = parser.next()) != null;) {
             result.append(current);
         }

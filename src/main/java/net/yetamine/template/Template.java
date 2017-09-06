@@ -40,13 +40,18 @@ public interface Template {
      * the template and it should resolve the references to definite values, or
      * return {@code null} when a reference definition should be retained in the
      * resolved result. However, a resolver may throw an exception, which should
-     * be relayed to the caller. References should not be {@code null}.
+     * be relayed to the caller, and {@link TemplateResolvingException} might be
+     * preferred to support the documented behavior. References should not be
+     * {@code null}.
      *
      * @param resolver
      *            the function to resolve unresolved references in the template.
      *            It must not be {@code null}.
      *
      * @return the resolved value of this template
+     *
+     * @throws TemplateResolvingException
+     *             if the resolving fails
      */
     String apply(Function<? super String, String> resolver);
 

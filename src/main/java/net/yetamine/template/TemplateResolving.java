@@ -32,6 +32,8 @@ public interface TemplateResolving extends UnaryOperator<String> {
      *
      * @throws TemplateSyntaxException
      *             if the parser fails to parse the template
+     * @throws TemplateResolvingException
+     *             if the resolving fails
      *
      * @see java.util.function.Function#apply(java.lang.Object)
      * @see TemplateFormat#resolve(String, Function)
