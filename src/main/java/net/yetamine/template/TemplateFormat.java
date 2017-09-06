@@ -16,6 +16,7 @@
 
 package net.yetamine.template;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -102,7 +103,30 @@ public interface TemplateFormat {
      *             if the parser fails to parse the template
      */
     default String resolve(String template, Function<? super String, String> resolver) {
-        return parse(template).apply(resolver);
+        final TemplateCallback<String> callback = new ResolvingCallback(resolver);
+        final Parser<String> parser = parser(template).with(callback);
+        final String head = parser.next();
+
+        if (head == null) {
+            assert parser.done();
+            return "";
+        }
+
+        final String next = parser.next();
+
+        if (next == null) {
+            assert parser.done();
+            return head;
+        }
+
+        // Well, there were at least two fragments
+        final StringBuilder result = new StringBuilder().append(head).append(next);
+        for (String current; (current = parser.next()) != null;) {
+            result.append(current);
+        }
+
+        assert parser.done();
+        return result.toString();
     }
 
     /**
@@ -116,5 +140,62 @@ public interface TemplateFormat {
      */
     default TemplateResolving with(Function<? super String, String> resolver) {
         return TemplateResolving.using(this, resolver);
+    }
+}
+
+/**
+ * Support for direct resolving without creating intermediate representation.
+ */
+final class ResolvingCallback implements TemplateCallback<String> {
+
+    /** Resolver to employ. */
+    private final Function<? super String, String> resolver;
+
+    /**
+     * Creates a new instance.
+     *
+     * @param resolving
+     *            the resolver to employ. It must not be {@code null}.
+     */
+    public ResolvingCallback(Function<? super String, String> resolving) {
+        resolver = Objects.requireNonNull(resolving);
+    }
+
+    /**
+     * @see net.yetamine.template.TemplateCallback#skipped(java.lang.String)
+     */
+    public String skipped(String value) {
+        return "";
+    }
+
+    /**
+     * @see net.yetamine.template.TemplateCallback#literal(java.lang.String)
+     */
+    public String literal(String value) {
+        return value;
+    }
+
+    /**
+     * @see net.yetamine.template.TemplateCallback#constant(java.lang.String,
+     *      java.lang.String)
+     */
+    public String constant(String definition, String value) {
+        return value;
+    }
+
+    /**
+     * @see net.yetamine.template.TemplateCallback#reference(java.lang.String,
+     *      java.lang.String)
+     */
+    public String reference(String definition, String reference) {
+        final String result = resolver.apply(reference);
+        return (result != null) ? result : definition;
+    }
+
+    /**
+     * @see net.yetamine.template.TemplateCallback#none()
+     */
+    public String none() {
+        return null;
     }
 }
