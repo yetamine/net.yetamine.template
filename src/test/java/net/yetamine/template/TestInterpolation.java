@@ -17,6 +17,7 @@
 package net.yetamine.template;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import org.testng.Assert;
@@ -99,6 +100,37 @@ public final class TestInterpolation {
             { "Half-open ~reference", "Half-open !~reference" },
             { "Half-open !~constant and ~more~", "Half-open !!~constant and !~more!~" },
             { "Half-open ~reference and ~more~", "Half-open !~reference and !~more!~" }
+            // @formatter:on
+        };
+    }
+
+    /**
+     * Tests {@link TemplateFormat#constant(String)} with equal brackets and no
+     * escaping.
+     *
+     * @param template
+     *            the template to process. It must not be {@code null}.
+     * @param constant
+     *            the constant to be produced. It must not be {@code null}.
+     */
+    @Test(dataProvider = "unescapableConstants")
+    public void testUnescapableConstants(String template, String constant) {
+        testConstants(Interpolation.with("%", "%"), template, constant);
+    }
+
+    @SuppressWarnings("javadoc")
+    @DataProvider(name = "unescapableConstants")
+    public Object[][] unescapableConstants() {
+        return new Object[][] {
+            // @formatter:off
+            { "", "" },
+            { "literal", "literal" },
+            { "%reference%", "%reference%" },
+            { "Prefixed %reference%", "Prefixed %reference%" },
+            { "%reference% with suffix", "%reference% with suffix" },
+            { "Infixed %reference%.", "Infixed %reference%." },
+            { "Half-open %reference", "Half-open %reference" },
+            { "Unintended %reference and %more%", "Unintended %reference and %more%" }
             // @formatter:on
         };
     }
@@ -188,6 +220,39 @@ public final class TestInterpolation {
     }
 
     /**
+     * Tests all resolving possibilities with equal brackets with no escaping
+     * and with a resolver that converts references to upper case.
+     *
+     * @param template
+     *            the template to process. It must not be {@code null}.
+     * @param resolution
+     *            the expected resolution. It must not be {@code null}.
+     */
+    @Test(dataProvider = "unescapableResolving")
+    public void testUnescapableResolve(String template, String resolution) {
+        testResolve(Interpolation.with("%", "%"), template, resolution);
+    }
+
+    @SuppressWarnings("javadoc")
+    @DataProvider(name = "unescapableResolving")
+    public Object[][] unescapableResolving() {
+        return new Object[][] {
+            // @formatter:off
+            { "", "" },
+            { "literal", "literal" },
+            { "%reference%", "REFERENCE" },
+            { "Prefixed %reference%", "Prefixed REFERENCE" },
+            { "%reference% with suffix", "REFERENCE with suffix" },
+            { "Infixed %reference%.", "Infixed REFERENCE." },
+            { "Surrounded%reference%.", "SurroundedREFERENCE." },
+            { "Half-open %reference", "Half-open %reference" },
+            { "Unintended %reference and %more%", "Unintended REFERENCE AND more%" },
+            { "No %reference on dot%net%", "No REFERENCE ON DOTnet%" }
+            // @formatter:on
+        };
+    }
+
+    /**
      * Tests constant processing.
      *
      * @param format
@@ -198,7 +263,18 @@ public final class TestInterpolation {
      *            the constant to be produced. It must not be {@code null}.
      */
     private static void testConstants(TemplateFormat format, String template, String constant) {
-        Assert.assertEquals(format.constant(template), constant);
+        final Optional<String> reproduction = format.reproduction(template);
+
+        reproduction.ifPresent(s -> {
+            Assert.assertEquals(s, constant);
+            Assert.assertEquals(format.constant(template), constant);
+        });
+
+        reproduction.orElseGet(() -> {
+            Assert.expectThrows(UnsupportedOperationException.class, () -> format.constant(template));
+            return null; // Not interesting actually
+        });
+
         Assert.assertEquals(format.parse(constant).toString(), constant);
         Assert.assertEquals(format.resolve(constant, s -> null), template);
     }
@@ -216,10 +292,8 @@ public final class TestInterpolation {
      */
     private static void testResolve(TemplateFormat format, String template, String resolution) {
         final UnaryOperator<String> resolver = s -> s.toUpperCase(Locale.ROOT);
-        final TemplateResolving resolving = format.with(resolver);
-
         Assert.assertEquals(format.parse(template).apply(resolver), resolution);
         Assert.assertEquals(format.resolve(template, resolver), resolution);
-        Assert.assertEquals(resolving.apply(template), resolution);
+        Assert.assertEquals(format.with(resolver).apply(template), resolution);
     }
 }

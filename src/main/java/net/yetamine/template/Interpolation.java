@@ -17,6 +17,7 @@
 package net.yetamine.template;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Default implementation of {@link TemplateFormat} interface.
@@ -49,8 +50,8 @@ public final class Interpolation implements TemplateFormat {
      * @param placeholderClosing
      *            the placeholder closing. It must be a non-empty string.
      * @param placeholderEscaping
-     *            the placeholder escaping sequence. It must be a non-empty
-     *            string that does not contain the placeholder opening.
+     *            the placeholder escaping sequence. It must not contain the
+     *            placeholder opening.
      */
     private Interpolation(String placeholderOpening, String placeholderClosing, String placeholderEscaping) {
         if (placeholderOpening.isEmpty() || placeholderClosing.isEmpty()) {
@@ -60,10 +61,6 @@ public final class Interpolation implements TemplateFormat {
         if (placeholderEscaping.contains(placeholderOpening)) {
             final String f = "Escaping sequence '%s' must not contain the opening bracket '%s'.";
             throw new IllegalArgumentException(String.format(f, placeholderEscaping, placeholderOpening));
-        }
-
-        if (placeholderEscaping.isEmpty()) {
-            throw new IllegalArgumentException("Escaping sequence must not be empty.");
         }
 
         escaping = placeholderEscaping;
@@ -79,13 +76,37 @@ public final class Interpolation implements TemplateFormat {
      * @param placeholderClosing
      *            the placeholder closing. It must be a non-empty string.
      * @param placeholderEscaping
-     *            the placeholder escaping sequence. It must be a non-empty
-     *            string that does not contain the placeholder opening.
+     *            the placeholder escaping sequence. It must not contain the
+     *            placeholder opening and it must not be empty.
      *
      * @return the new instance
      */
     public static TemplateFormat with(String placeholderOpening, String placeholderClosing, String placeholderEscaping) {
+        if (placeholderEscaping.isEmpty()) {
+            throw new IllegalArgumentException("Empty escaping sequence not permitted.");
+        }
+
         return new Interpolation(placeholderOpening, placeholderClosing, placeholderEscaping);
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * <p>
+     * Unlike {@link #with(String, String, String)}, this method provides an
+     * instance with no escaping capability, hence {@link #constant(String)}
+     * returns its argument without any escaping. Use such a setup carefully,
+     * because no real constants exist.
+     *
+     * @param placeholderOpening
+     *            the placeholder opening. It must be a non-empty string.
+     * @param placeholderClosing
+     *            the placeholder closing. It must be a non-empty string.
+     *
+     * @return the new instance
+     */
+    public static TemplateFormat with(String placeholderOpening, String placeholderClosing) {
+        return new Interpolation(placeholderOpening, placeholderClosing, "");
     }
 
     /**
@@ -135,6 +156,40 @@ public final class Interpolation implements TemplateFormat {
      * @see net.yetamine.template.TemplateFormat#constant(java.lang.String)
      */
     public String constant(String string) {
+        if (escaping.isEmpty()) { // Honor the contract
+            throw new UnsupportedOperationException();
+        }
+
+        return escape(string);
+    }
+
+    /**
+     * @see net.yetamine.template.TemplateFormat#reproduction(java.lang.String)
+     */
+    public Optional<String> reproduction(String string) {
+        return escaping.isEmpty() ? Optional.empty() : Optional.of(escape(string));
+    }
+
+    /**
+     * @see net.yetamine.template.TemplateFormat#parser(java.lang.String)
+     */
+    public TemplateParser parser(String template) {
+        return new ParserImplementation(template);
+    }
+
+    /**
+     * Formats the given string as a constant under the assumption that
+     * {@link #escaping} provides a non-empty sequence.
+     *
+     * @param string
+     *            the input to represent as a constant. It must not be
+     *            {@code null}.
+     *
+     * @return a constant representing the given string
+     */
+    private String escape(String string) {
+        assert !escaping.isEmpty(); // Otherwise it returns a copy of the input
+
         int next = string.indexOf(opening);
         if (next == -1) {
             return string;
@@ -154,13 +209,6 @@ public final class Interpolation implements TemplateFormat {
         }
 
         return result.toString();
-    }
-
-    /**
-     * @see net.yetamine.template.TemplateFormat#parser(java.lang.String)
-     */
-    public TemplateParser parser(String template) {
-        return new ParserImplementation(template);
     }
 
     /**
@@ -305,15 +353,17 @@ public final class Interpolation implements TemplateFormat {
                 return;
             }
 
-            // Check the presence of the escaping sequence
-            final int offset = definitionOpen - escaping.length();
-            if ((from <= offset) && input.regionMatches(offset, escaping, 0, escaping.length())) {
-                // Escaping and opening sequences reduce to a constant with the opening sequence
-                definitionDone = definitionOpen + opening.length();
-                definitionOpen = offset;
-                symbol = opening;
-                constant = true;
-                return;
+            if (!escaping.isEmpty()) {
+                // Check the presence of the escaping sequence
+                final int offset = definitionOpen - escaping.length();
+                if ((from <= offset) && input.regionMatches(offset, escaping, 0, escaping.length())) {
+                    // Escaping and opening sequences reduce to a constant with the opening sequence
+                    definitionDone = definitionOpen + opening.length();
+                    definitionOpen = offset;
+                    symbol = opening;
+                    constant = true;
+                    return;
+                }
             }
 
             // Check the presence of a subsequent closing sequence

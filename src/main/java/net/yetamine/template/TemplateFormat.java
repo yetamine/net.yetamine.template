@@ -17,6 +17,7 @@
 package net.yetamine.template;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -47,10 +48,34 @@ public interface TemplateFormat {
      * @return a constant representing the given string
      *
      * @throws UnsupportedOperationException
-     *             if the format does not support escaping and requires an
-     *             alternative implementation-specific approach
+     *             if the format does not support escaping
      */
     String constant(String string);
+
+    /**
+     * Formats the given string as a constant if possible.
+     *
+     * <p>
+     * The default implementation employs {@link #constant(String)} to compute
+     * the result and when {@link UnsupportedOperationException} is thrown, it
+     * returns an empty {@link Optional} instead. While this approach maintains
+     * the backward compatibility, it is not efficient and real implementations
+     * should rather stick to a more efficient approach.
+     *
+     * @param string
+     *            the input to represent as a constant. It must not be
+     *            {@code null}.
+     *
+     * @return a constant representing the given string, or an empty
+     *         {@link Optional} if the constant could not be created
+     */
+    default Optional<String> reproduction(String string) {
+        try {
+            return Optional.of(constant(string));
+        } catch (UnsupportedOperationException e) {
+            return Optional.empty();
+        }
+    }
 
     /**
      * Returns an object that can parse the template according to this format.
