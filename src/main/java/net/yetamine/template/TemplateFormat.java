@@ -130,7 +130,7 @@ public interface TemplateFormat {
      *             if the resolving fails
      */
     default String resolve(String template, Function<? super String, String> resolver) {
-        final TemplateCallback<String> callback = new ResolvingCallback(resolver);
+        final TemplateCallback<String> callback = new TemplateCallbackResolver(resolver);
         final Parser<String> parser = parser(template).with(callback);
         final String head = parser.next();
 
@@ -173,7 +173,7 @@ public interface TemplateFormat {
 /**
  * Support for direct resolving without creating intermediate representation.
  */
-final class ResolvingCallback implements TemplateCallback<String> {
+final class TemplateCallbackResolver implements TemplateCallback<String> {
 
     /** Resolver to employ. */
     private final Function<? super String, String> resolver;
@@ -184,7 +184,7 @@ final class ResolvingCallback implements TemplateCallback<String> {
      * @param resolving
      *            the resolver to employ. It must not be {@code null}.
      */
-    public ResolvingCallback(Function<? super String, String> resolving) {
+    public TemplateCallbackResolver(Function<? super String, String> resolving) {
         resolver = Objects.requireNonNull(resolving);
     }
 

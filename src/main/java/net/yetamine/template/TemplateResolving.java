@@ -67,14 +67,14 @@ public interface TemplateResolving extends UnaryOperator<String> {
      * @return a default binding
      */
     static TemplateResolving using(TemplateFormat format, Function<? super String, String> resolver) {
-        return new DefaultResolving(format, resolver);
+        return new TemplateResolvingImplementation(format, resolver);
     }
 }
 
 /**
  * Default implementation of {@link TemplateResolving}.
  */
-final class DefaultResolving implements TemplateResolving {
+final class TemplateResolvingImplementation implements TemplateResolving {
 
     /** Template format. */
     private final TemplateFormat format;
@@ -89,7 +89,7 @@ final class DefaultResolving implements TemplateResolving {
      * @param symbolResolver
      *            the resolver. It must not be {@code null}.
      */
-    public DefaultResolving(TemplateFormat templateFormat, Function<? super String, String> symbolResolver) {
+    public TemplateResolvingImplementation(TemplateFormat templateFormat, Function<? super String, String> symbolResolver) {
         resolver = Objects.requireNonNull(symbolResolver);
         format = Objects.requireNonNull(templateFormat);
     }

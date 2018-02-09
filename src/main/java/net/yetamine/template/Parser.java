@@ -84,7 +84,7 @@ public interface Parser<R> {
      * @return a stream coupled with this parser
      */
     default Stream<R> stream() {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(new ParsingIterator<>(this), 0), false);
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(new ParserIterator<>(this), 0), false);
     }
 
     /**
@@ -102,7 +102,7 @@ public interface Parser<R> {
      *             if the parser fails to parse the template
      */
     default void forEach(Consumer<? super R> consumer) {
-        new ParsingIterator<>(this).forEachRemaining(consumer);
+        new ParserIterator<>(this).forEachRemaining(consumer);
     }
 }
 
@@ -120,7 +120,7 @@ public interface Parser<R> {
  * @param <R>
  *            the type of the result
  */
-final class ParsingIterator<R> implements Iterator<R> {
+final class ParserIterator<R> implements Iterator<R> {
 
     /** Source parser. */
     private final Parser<? extends R> parser;
@@ -131,7 +131,7 @@ final class ParsingIterator<R> implements Iterator<R> {
      * @param source
      *            the source parser. It must not be {@code null}.
      */
-    public ParsingIterator(Parser<? extends R> source) {
+    public ParserIterator(Parser<? extends R> source) {
         parser = Objects.requireNonNull(source);
     }
 
