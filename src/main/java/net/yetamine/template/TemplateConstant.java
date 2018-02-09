@@ -52,8 +52,22 @@ public final class TemplateConstant implements Template {
      *
      * @return the new instance
      */
-    public static Template instance(String def, String val) {
+    public static TemplateConstant from(String def, String val) {
         return new TemplateConstant(def, val);
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @param def
+     *            the definition of the template. It must not be {@code null}.
+     * @param val
+     *            the constant value. It must not be {@code null}.
+     *
+     * @return the new instance
+     */
+    public static Template instance(String def, String val) {
+        return from(def, val);
     }
 
     /**
@@ -93,6 +107,15 @@ public final class TemplateConstant implements Template {
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
     public String apply(Function<? super String, String> resolver) {
+        return value;
+    }
+
+    /**
+     * Returns the value.
+     *
+     * @return the value
+     */
+    public String value() {
         return value;
     }
 }

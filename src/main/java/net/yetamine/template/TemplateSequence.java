@@ -125,6 +125,10 @@ public final class TemplateSequence implements Template {
      */
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
         return (obj instanceof TemplateSequence) && Arrays.equals(fragments, ((TemplateSequence) obj).fragments);
     }
 

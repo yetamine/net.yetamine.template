@@ -52,8 +52,22 @@ public final class TemplateReference implements Template {
      *
      * @return the new instance
      */
-    public static Template instance(String def, String ref) {
+    public static TemplateReference from(String def, String ref) {
         return new TemplateReference(def, ref);
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @param def
+     *            the definition of the reference. It must not be {@code null}.
+     * @param ref
+     *            the represented reference to be passed to the resolver
+     *
+     * @return the new instance
+     */
+    public static Template instance(String def, String ref) {
+        return from(def, ref);
     }
 
     /**
@@ -95,5 +109,14 @@ public final class TemplateReference implements Template {
     public String apply(Function<? super String, String> resolver) {
         final String result = resolver.apply(reference);
         return (result != null) ? result : definition;
+    }
+
+    /**
+     * Returns the reference content.
+     *
+     * @return the reference content
+     */
+    public String reference() {
+        return reference;
     }
 }

@@ -25,7 +25,7 @@ import java.util.function.Function;
 public final class TemplateLiteral implements Template {
 
     /** Empty literal. */
-    private static final Template EMPTY = new TemplateLiteral("");
+    private static final TemplateLiteral EMPTY = new TemplateLiteral("");
 
     /** Represented value. */
     private final String value;
@@ -48,8 +48,20 @@ public final class TemplateLiteral implements Template {
      *
      * @return the value representation
      */
-    public static Template of(String val) {
+    public static TemplateLiteral from(String val) {
         return val.isEmpty() ? EMPTY : new TemplateLiteral(val);
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @param val
+     *            the value to represent. It must not be {@code null}.
+     *
+     * @return the value representation
+     */
+    public static Template of(String val) {
+        return from(val);
     }
 
     /**
@@ -74,7 +86,7 @@ public final class TemplateLiteral implements Template {
      */
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof TemplateLiteral) && value.equals(((TemplateLiteral) obj).value);
+        return ((obj == this) || ((obj instanceof TemplateLiteral) && value.equals(((TemplateLiteral) obj).value)));
     }
 
     /**
@@ -89,6 +101,15 @@ public final class TemplateLiteral implements Template {
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
     public String apply(Function<? super String, String> resolver) {
+        return value;
+    }
+
+    /**
+     * Returns the value.
+     *
+     * @return the value
+     */
+    public String value() {
         return value;
     }
 }
