@@ -16,12 +16,16 @@
 
 package net.yetamine.template;
 
-import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
  * Tools for fast template testing.
+ *
+ * @deprecated Use {@link Source} instead, which provides all the
+ *             original functionality in a more object-oriented manner with a
+ *             couple of additional use cases.
  */
+@Deprecated
 public final class TemplateTesting {
 
     /**
@@ -47,7 +51,7 @@ public final class TemplateTesting {
      *             if the parser fails to parse the template
      */
     public static boolean isLiteral(TemplateFormat format, String input) {
-        return format.parser(input).with(LiteralScanner.instance()).stream().allMatch(Boolean.TRUE::equals);
+        return Source.isLiteral(format, input);
     }
 
     /**
@@ -64,8 +68,7 @@ public final class TemplateTesting {
      * @return the predicate for testing inputs
      */
     public static Predicate<String> isLiteral(TemplateFormat format) {
-        Objects.requireNonNull(format);
-        return template -> isLiteral(format, template);
+        return Source.isLiteral(format);
     }
 
     /**
@@ -80,11 +83,7 @@ public final class TemplateTesting {
      * @return {@code true} if the input can be parsed
      */
     public static boolean isValid(TemplateFormat format, String input) {
-        try {
-            return isLiteral(format, input) | true;
-        } catch (TemplateSyntaxException e) {
-            return false;
-        }
+        return Source.isParseable(format, input);
     }
 
     /**
@@ -97,69 +96,6 @@ public final class TemplateTesting {
      * @return the predicate for testing inputs
      */
     public static Predicate<String> isValid(TemplateFormat format) {
-        Objects.requireNonNull(format);
-        return template -> isValid(format, template);
-    }
-
-    /**
-     * Detects if the given template contains any symbols.
-     */
-    private static final class LiteralScanner implements TemplateCallback<Boolean> {
-
-        /** Sole instance of this class. */
-        private static final LiteralScanner INSTANCE = new LiteralScanner();
-
-        /**
-         * Creates a new instance.
-         */
-        private LiteralScanner() {
-            // Default constructor
-        }
-
-        /**
-         * Returns an instance.
-         *
-         * @return an instance
-         */
-        public static LiteralScanner instance() {
-            return INSTANCE;
-        }
-
-        /**
-         * @see net.yetamine.template.TemplateCallback#skipped(java.lang.String)
-         */
-        public Boolean skipped(String value) {
-            return Boolean.FALSE;
-        }
-
-        /**
-         * @see net.yetamine.template.TemplateCallback#literal(java.lang.String)
-         */
-        public Boolean literal(String value) {
-            return Boolean.TRUE;
-        }
-
-        /**
-         * @see net.yetamine.template.TemplateCallback#constant(java.lang.String,
-         *      java.lang.String)
-         */
-        public Boolean constant(String definition, String value) {
-            return Boolean.FALSE;
-        }
-
-        /**
-         * @see net.yetamine.template.TemplateCallback#reference(java.lang.String,
-         *      java.lang.String)
-         */
-        public Boolean reference(String definition, String reference) {
-            return Boolean.FALSE;
-        }
-
-        /**
-         * @see net.yetamine.template.TemplateCallback#none()
-         */
-        public Boolean none() {
-            return Boolean.TRUE;
-        }
+        return Source.isParseable(format);
     }
 }

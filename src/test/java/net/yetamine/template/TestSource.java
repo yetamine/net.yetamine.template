@@ -22,19 +22,28 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Tests {@link TemplateTesting}.
+ * Tests {@link Source}.
  */
-public final class TestTemplateTesting {
+public final class TestSource {
 
     /**
-     * Tests {@link TemplateParser} in a more advanced scenario.
+     * Tests {@code isLiteral}.
      */
     @Test
-    public void test() {
-        final Predicate<String> literal = TemplateTesting.isLiteral(Interpolation.standard());
+    public void testIsLiteral() {
+        final TemplateFormat format = Interpolation.standard();
+
+        final Predicate<String> literal = Source.isLiteral(format);
         Assert.assertTrue(literal.test(""));
         Assert.assertTrue(literal.test("This is a literal."));
         Assert.assertFalse(literal.test("Symbols like $${this escaped one} violate literals."));
         Assert.assertFalse(literal.test("Symbols like ${placeholders} are definitely not literals."));
+
+        // @formatter:off
+        Assert.assertTrue(Source.parse("", format).isLiteral());
+        Assert.assertTrue(Source.parse("This is a literal.", format).isLiteral());
+        Assert.assertFalse(Source.parse("Symbols like $${this escaped one} violate literals.", format).isLiteral());
+        Assert.assertFalse(Source.parse("Symbols like ${placeholders} are definitely not literals.", format).isLiteral());
+        // @formatter:on
     }
 }
