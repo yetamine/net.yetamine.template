@@ -44,6 +44,11 @@ public interface Template {
      * preferred to support the documented behavior. References should not be
      * {@code null}.
      *
+     * <p>
+     * The result of resolution should not be {@code null} in general. However,
+     * {@code null} results could be permitted in specific contexts and scopes
+     * where such a distinct value must exist for the context-specific use.
+     *
      * @param resolver
      *            the function to resolve unresolved references in the template.
      *            It must not be {@code null}.
