@@ -40,7 +40,7 @@ public final class TestTemplateRecursion {
         final Map<String, String> definitions = new HashMap<>();
 
         definitions.put("L1.1", "(L1.1)");
-        definitions.put("L1.2", "(L1.2)");
+        definitions.put("L1.2", "($${L1.2})");
         definitions.put("C1.1", "(${C1.2})");
         definitions.put("C1.2", "(${C1.1} ${L1.1})");
         definitions.put("C1.3", "(${C1.3})");
@@ -127,14 +127,14 @@ public final class TestTemplateRecursion {
         templates.put("${MISSING}", "${MISSING}");
 
         templates.put("${L1.1}", "(L1.1)");
-        templates.put("${L1.2}", "(L1.2)");
+        templates.put("${L1.2}", "(${L1.2})");
         templates.put("${C1.1}", "${C1.1}");
         templates.put("${C1.2}", "${C1.2}");
         templates.put("${C1.3}", "${C1.3}");
-        templates.put("${T1.1}", "((L1.1) (L1.2))");
-        templates.put("${T1.2}", "((L1.1) ((L1.1) (L1.2)))");
-        templates.put("${T1.3}", "(((L1.1) ((L1.1) (L1.2))) ${C1.1} ${C1.3})");
-        templates.put("${T1.4}", "((L1.1) ${MISSING} (L1.2))");
+        templates.put("${T1.1}", "((L1.1) (${L1.2}))");
+        templates.put("${T1.2}", "((L1.1) ((L1.1) (${L1.2})))");
+        templates.put("${T1.3}", "(((L1.1) ((L1.1) (${L1.2}))) ${C1.1} ${C1.3})");
+        templates.put("${T1.4}", "((L1.1) ${MISSING} (${L1.2}))");
 
         templates.put("${L2.1}", "(L2.1)");
         templates.put("${L2.2}", "(L2.2)");
@@ -146,15 +146,15 @@ public final class TestTemplateRecursion {
 
         templates.put("${L3.1}", "(L3.1)");
         templates.put("${L3.2}", "(L3.2)");
-        templates.put("${T3.1}", "(((L1.1) (L1.2)) (L3.1))");
+        templates.put("${T3.1}", "(((L1.1) (${L1.2})) (L3.1))");
         templates.put("${C3.1.1}", "${C3.1.1}");
         templates.put("${C3.1.2}", "${C3.1.2}");
         templates.put("${C3.1.3}", "${C3.1.3}");
         templates.put("${C3.2.1}", "${C3.2.1}");
         templates.put("${C3.2.2}", "${C3.2.2}");
         templates.put("${C3.2.3}", "${C3.2.3}");
-        templates.put("${T3.2}", "((((L1.1) (L1.2)) (L3.1)) ${C3.1.1})");
-        templates.put("${T3.3}", "(((((L1.1) (L1.2)) (L3.1)) ${C3.1.1}) ${C1.1} ${C1.2})");
+        templates.put("${T3.2}", "((((L1.1) (${L1.2})) (L3.1)) ${C3.1.1})");
+        templates.put("${T3.3}", "(((((L1.1) (${L1.2})) (L3.1)) ${C3.1.1}) ${C1.1} ${C1.2})");
 
         return new Object[][] { { TemplateRecursion.source().templates(DEFINITIONS::get), templates } };
     }
@@ -242,14 +242,14 @@ public final class TestTemplateRecursion {
         final Map<String, String> templates = new LinkedHashMap<>(); // Keep the traversal stable
 
         templates.put("${L1.1}", "(L1.1)");
-        templates.put("${L1.2}", "(L1.2)");
+        templates.put("${L1.2}", "(${L1.2})");
         templates.put("${C1.1}", "#C1.1!");
         templates.put("${C1.2}", "#C1.2!");
         templates.put("${C1.3}", "#C1.3!");
-        templates.put("${T1.1}", "((L1.1) (L1.2))");
-        templates.put("${T1.2}", "((L1.1) ((L1.1) (L1.2)))");
-        templates.put("${T1.3}", "(((L1.1) ((L1.1) (L1.2))) #C1.1! #C1.3!)");
-        templates.put("${T1.4}", "((L1.1) ${MISSING} (L1.2))");
+        templates.put("${T1.1}", "((L1.1) (${L1.2}))");
+        templates.put("${T1.2}", "((L1.1) ((L1.1) (${L1.2})))");
+        templates.put("${T1.3}", "(((L1.1) ((L1.1) (${L1.2}))) #C1.1! #C1.3!)");
+        templates.put("${T1.4}", "((L1.1) ${MISSING} (${L1.2}))");
 
         templates.put("${L2.1}", "(L2.1)");
         templates.put("${L2.2}", "(L2.2)");
@@ -261,15 +261,15 @@ public final class TestTemplateRecursion {
 
         templates.put("${L3.1}", "(L3.1)");
         templates.put("${L3.2}", "(L3.2)");
-        templates.put("${T3.1}", "(((L1.1) (L1.2)) (L3.1))");
+        templates.put("${T3.1}", "(((L1.1) (${L1.2})) (L3.1))");
         templates.put("${C3.1.1}", "#C3.1.1!");
         templates.put("${C3.1.2}", "#C3.1.2!");
         templates.put("${C3.1.3}", "#C3.1.3!");
         templates.put("${C3.2.1}", "#C3.2.1!");
         templates.put("${C3.2.2}", "#C3.2.2!");
         templates.put("${C3.2.3}", "#C3.2.3!");
-        templates.put("${T3.2}", "((((L1.1) (L1.2)) (L3.1)) #C3.1.1!)");
-        templates.put("${T3.3}", "(((((L1.1) (L1.2)) (L3.1)) #C3.1.1!) #C1.1! #C1.2!)");
+        templates.put("${T3.2}", "((((L1.1) (${L1.2})) (L3.1)) #C3.1.1!)");
+        templates.put("${T3.3}", "(((((L1.1) (${L1.2})) (L3.1)) #C3.1.1!) #C1.1! #C1.2!)");
 
         return new Object[][] { { TemplateRecursion.source().templates(DEFINITIONS::get), templates } };
     }

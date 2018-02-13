@@ -1320,15 +1320,15 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
                 return put(reference, cached.value(), Collections.emptySet());
             }
 
-            final Set<String> decomposed = decomposed(definition);
-
-            if (decomposed.isEmpty()) { // Optimize for a literal, so that we do not dive recursively
-                return put(reference, definition.toString(), Collections.emptySet());
+            final Set<String> placeholders = new HashSet<>();
+            final String resolution = decompose(definition, placeholders::add);
+            if (placeholders.isEmpty()) { // Optimize for a literal, so that we do not dive recursively
+                return put(reference, resolution, Collections.emptySet());
             }
 
             put(reference, definition); // Before recursion!
 
-            decomposed.forEach(placeholder -> {
+            placeholders.forEach(placeholder -> {
                 final T target = linking.apply(placeholder, definition.context());
                 if (target != null) { // If the linking is stable, later we'll get null too and find nothing resolved
                     incoming.computeIfAbsent(definition, k -> new HashSet<>()).add(dereference(target));
@@ -1340,21 +1340,21 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
         }
 
         /**
-         * Decomposes a template.
+         * Captures references of a template.
          *
          * @param template
          *            the parsed template. It must not be {@code null}.
+         * @param placeholders
+         *            the consumer to accept placeholder occurrences. It must
+         *            not be {@code null}.
          *
-         * @return the decomposition of the template
+         * @return the resolution with unresolved placeholders
          */
-        private Set<String> decomposed(Template template) {
-            final Set<String> result = new HashSet<>();
-            template.apply(placeholder -> {
-                result.add(placeholder);
+        private String decompose(Template template, Consumer<? super String> placeholders) {
+            return template.apply(placeholder -> {
+                placeholders.accept(placeholder);
                 return null;
             });
-
-            return result;
         }
 
         /**
