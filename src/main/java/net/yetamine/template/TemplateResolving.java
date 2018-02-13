@@ -27,6 +27,25 @@ import java.util.function.UnaryOperator;
  */
 public interface TemplateResolving extends UnaryOperator<String> {
 
+    /* Future considerations:
+     *
+     * Replacing
+     *   Function<? super String, String> resolver()
+     * with
+     *   UnaryOperator<String> resolver()
+     * might make the signatures a bit cleaner and perhaps make some use cases
+     * easier.
+     *
+     * On the other hand
+     *   TemplateResolving using(TemplateFormat format, Function<? super String, String> resolver)
+     * needs rectification as well in such a case. Overloading it with
+     * UnaryOperator<String> makes no sense, because the compiler gets
+     * confused in such situations, and changing the parameter prevents
+     * using more general functions easily. A compromise would turn the
+     * Function into UnaryOperator if necessary at some overhead. Would
+     * that be acceptable?
+     */
+
     /**
      * Resolves the given template.
      *
