@@ -449,19 +449,6 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
     }
 
     /**
-     * Returns a cached resolution.
-     *
-     * @param reference
-     *            the reference to check. It must not be {@code null}.
-     *
-     * @return the result (which may represent an unresolvable reference), or
-     *         {@code null} if the referred result was not found in the cache
-     */
-    Nullable<String> cached(T reference) {
-        return (cache != null) ? cache.get(reference) : null;
-    }
-
-    /**
      * Resolves the given reference.
      *
      * @param reference
@@ -471,7 +458,7 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
      *         reference should be retained, which occurs always when the
      *         reference is {@code null}
      */
-    private String resolve(T reference) {
+    public String resolve(T reference) {
         if (reference == null) {
             return null;
         }
@@ -498,6 +485,19 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
         }
 
         return Nullable.toValue(resolved.get(reference));
+    }
+
+    /**
+     * Returns a cached resolution.
+     *
+     * @param reference
+     *            the reference to check. It must not be {@code null}.
+     *
+     * @return the result (which may represent an unresolvable reference), or
+     *         {@code null} if the referred result was not found in the cache
+     */
+    Nullable<String> cached(T reference) {
+        return (cache != null) ? cache.get(reference) : null;
     }
 
     /**
