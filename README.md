@@ -1,10 +1,12 @@
 # net.yetamine.template #
 
-This repository contains a library for supporting simple string templates.
+This repository contains a library for supporting string templates with resolvable placeholders.
 
-The templates can contain placeholders that can be resolved using a custom resolving function. A placeholder occurrence appears enclosed between a custom-defined opening and closing sequences and the opening sequence, which triggers recognition of a placeholder, can be escaped with yet another custom-defined sequence. The implementation supports parsing and formatting of the templates and provides a rich set of generic interfaces that can be used for implementing a very different types of templates.
+The library defines a set of rich and fluent interfaces for implementing various template types even with different syntax rules. These interfaces decouple clients, that want use a template, from all the details. Placeholders in the templates can be resolved with a custom resolving function, usually provided by a client.
 
-The bundled implementation does not support recursive templates (i.e., a placeholder can't contain another placeholder), however, it does not exclude the possibility of recursive templates, because this capability depends on the resolving function only. Moreover, a more advanced implementation, which would use the same interfaces, can be provided to support even more complex or nested placeholders.
+The library bundles support for templates with placeholders surrounded with user-defined brackets (with the possibility to define an escape sequence). Although the bundled parser does not support nested placeholders (i.e., placeholders containing whole templates with their own placeholders), the library provides a recursive resolver that allows a placeholder to resolve to a nested template. The recursive resolver provides a lof of hooks to handle cycles, failures of nested template parsing, failures of template lookups, context-sensitive placeholders etc. The resolver can cache the results as well while it remains thread-safe.
+
+Both bundled parts cover probably most needs, but if it is not sufficient, it could be enough to supply a smarter parser that handles different template syntax (perhaps supporting nested placeholders) and combine such a smarter parser with the bundled recursive resolver to get really powerful recursion-capable templates.
 
 
 ## Examples ##
@@ -32,6 +34,28 @@ System.out.println(format.resolve("Hello $${name}!", map::get)); // Just "Hello 
 System.out.println(Interpolation.with("$[", "]", "\\").resolve("Hello $[name]! No \\$[color]!", map::get));
 
 // You can get a pre-parsed templates, template resolving functions and more! 
+```
+
+And here a teaser for recursive template resolution:
+
+```java
+// Let's have a Map with some templates, perhaps from a .properties file
+final Map<String, String> map = new HashMap<>();
+map.put("host", "localhost");
+map.put("port", "443");
+map.put("path", "/index.html");
+map.put("protocol", "https");
+map.put("url", "${protocol}://${host}:${port}${path}");
+
+// Let's make a resolver with the default settings reading from the map
+final UnaryOperator<String> resolver = TemplateRecursion.with(map::get).build();
+
+// We can use it directly to get "https://localhost:443/index.html"
+System.out.println(resolver.apply("url"));
+
+// Or we can plug it into a usual template resolution
+final TemplateFormat format = Interpolation.standard();
+System.out.println(format.resolve("Could not connect to ${url}.", resolver));
 ```
 
 
