@@ -667,7 +667,7 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
          * @return the lookup strategy
          */
         public Function<T, Binding<T>> lookup() {
-            // Bind the following ugly lambda to these local variables. We could make an object as well to freeze that
+            // Bind the following ugly lambda to these local variables. We could make an object as well to freeze that.
             final TemplateFormat templateFormat = format;
             final Function<? super T, String> constants = constantHandler;
             final Function<? super T, String> templates = templateHandler;
@@ -991,12 +991,15 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
      * any of the incoming edges, the path leads to a cycle).
      *
      * <p>
-     * When topological sort fails to resolve all vertices, there are two ways
-     * implemented how to handle the situation. The simpler one resolves all the
-     * remaining vertices with the given handler independently, the more complex
-     * one finds all vertices that lie on a cycle and resolves them as above,
-     * but then resumes topological sort and resolves remaining vertices that
-     * should form a forest then (all cycles were removed).
+     * When topological sort fails to resolve all vertices, the algorithm finds
+     * all vertices lying on a cycle and resolves them with the given handler
+     * indepedently, which removes all cycles from the graph. Then it primary
+     * topological sort algorithm resumes and resolves the remaining vertices.
+     * This strategy delivers more intuitive results with the simple rule that
+     * only a placeholder lying in a cycle is resolved as a failure, while any
+     * placeholder just depending on a cycle resolves as much as possible. The
+     * implementation of this strategy does not require so complex cache, too,
+     * which simplifies ensuring thread safety.
      *
      * <p>
      * The implementation several maps to capture the graph and the progress:
