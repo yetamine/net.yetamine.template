@@ -22,10 +22,10 @@ import java.util.function.Function;
 /**
  * Represents a template reference.
  */
-public final class TemplateReference implements Template {
+public final class TemplateReference implements Template, Symbol {
 
     /** Represented reference. */
-    private final String reference;
+    private final String value;
     /** Reference definition. */
     private final String definition;
 
@@ -39,7 +39,7 @@ public final class TemplateReference implements Template {
      */
     private TemplateReference(String def, String ref) {
         definition = Objects.requireNonNull(def);
-        reference = ref;
+        value = ref;
     }
 
     /**
@@ -71,7 +71,8 @@ public final class TemplateReference implements Template {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see Template#toString()
+     * @see Symbol#toString()
      */
     @Override
     public String toString() {
@@ -89,7 +90,7 @@ public final class TemplateReference implements Template {
 
         if (obj instanceof TemplateReference) {
             final TemplateReference o = (TemplateReference) obj;
-            return definition.equals(o.definition) && Objects.equals(reference, o.reference);
+            return definition.equals(o.definition) && Objects.equals(value, o.value);
         }
 
         return false;
@@ -107,16 +108,33 @@ public final class TemplateReference implements Template {
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
     public String apply(Function<? super String, String> resolver) {
-        final String result = resolver.apply(reference);
+        final String result = resolver.apply(value);
         return (result != null) ? result : definition;
+    }
+
+    /**
+     * @see net.yetamine.template.Symbol#value()
+     */
+    public String value() {
+        return value;
+    }
+
+    /**
+     * @see net.yetamine.template.Symbol#constant()
+     */
+    public boolean constant() {
+        return false;
     }
 
     /**
      * Returns the reference content.
      *
      * @return the reference content
+     *
+     * @deprecated Use {@link #value()} inherited from {@link Symbol}.
      */
+    @Deprecated
     public String reference() {
-        return reference;
+        return value();
     }
 }

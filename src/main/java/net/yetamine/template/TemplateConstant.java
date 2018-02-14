@@ -22,7 +22,7 @@ import java.util.function.Function;
 /**
  * Represents a template constant.
  */
-public final class TemplateConstant implements Template {
+public final class TemplateConstant implements Template, Symbol {
 
     /** Represented value. */
     private final String value;
@@ -71,7 +71,8 @@ public final class TemplateConstant implements Template {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see Template#toString()
+     * @see Symbol#toString()
      */
     @Override
     public String toString() {
@@ -111,11 +112,16 @@ public final class TemplateConstant implements Template {
     }
 
     /**
-     * Returns the value.
-     *
-     * @return the value
+     * @see net.yetamine.template.Symbol#value()
      */
     public String value() {
         return value;
+    }
+
+    /**
+     * @see net.yetamine.template.Symbol#constant()
+     */
+    public boolean constant() {
+        return true;
     }
 }
