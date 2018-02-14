@@ -38,7 +38,7 @@ public final class TestInterpolation {
      *            the constant to be produced. It must not be {@code null}.
      */
     @Test(dataProvider = "standardConstants")
-    public void testStandardConstant(String template, String constant) {
+    public void testStandardConstants(String template, String constant) {
         testConstants(Interpolation.standard(), template, constant);
     }
 
@@ -179,6 +179,43 @@ public final class TestInterpolation {
     }
 
     /**
+     * Tests all resolving possibilities without brackets and with a resolver
+     * that converts references to upper case.
+     *
+     * @param template
+     *            the template to process. It must not be {@code null}.
+     * @param resolution
+     *            the expected resolution. It must not be {@code null}.
+     */
+    @Test(dataProvider = "reducedResolving")
+    public void testReducedResolve(String template, String resolution) {
+        testResolve(Interpolation.reduced(), template, resolution);
+    }
+
+    @SuppressWarnings("javadoc")
+    @DataProvider(name = "reducedResolving")
+    public Object[][] reducedResolving() {
+        return new Object[][] {
+            // @formatter:off
+            { "", "" },
+            { "literal", "literal" },
+            { "$reference", "REFERENCE" },
+            { "$$constant", "$constant" },
+            { "Prefixed $reference", "Prefixed REFERENCE" },
+            { "Prefixed $$constant", "Prefixed $constant" },
+            { "$reference with suffix", "REFERENCE with suffix" },
+            { "$$constant with suffix", "$constant with suffix" },
+            { "Infixed $reference.", "Infixed REFERENCE." },
+            { "Infixed $$constant.", "Infixed $constant." },
+            { "A $$constant and $reference.", "A $constant and REFERENCE." },
+            { "Surrounded$$constant.", "Surrounded$constant." },
+            { "Surrounded$reference.", "SurroundedREFERENCE." },
+            { "Surrounded$$constant$reference.", "Surrounded$constantREFERENCE." },
+            // @formatter:on
+        };
+    }
+
+    /**
      * Tests all resolving possibilities with equal brackets and with a resolver
      * that converts references to upper case.
      *
@@ -187,14 +224,14 @@ public final class TestInterpolation {
      * @param resolution
      *            the expected resolution. It must not be {@code null}.
      */
-    @Test(dataProvider = "customResolving")
-    public void testCustomResolve(String template, String resolution) {
+    @Test(dataProvider = "customResolvingWithBrackets")
+    public void testCustomResolveWithBrackets(String template, String resolution) {
         testResolve(Interpolation.with("~", "~", "!"), template, resolution);
     }
 
     @SuppressWarnings("javadoc")
-    @DataProvider(name = "customResolving")
-    public Object[][] customResolving() {
+    @DataProvider(name = "customResolvingWithBrackets")
+    public Object[][] customResolvingWithBrackets() {
         return new Object[][] {
             // @formatter:off
             { "", "" },
@@ -215,6 +252,47 @@ public final class TestInterpolation {
             { "Half-open ~reference", "Half-open ~reference" },
             { "Unintended ~reference and ~more~", "Unintended REFERENCE AND more~" },
             { "No ~reference on dot~net~", "No REFERENCE ON DOTnet~" }
+            // @formatter:on
+        };
+    }
+
+    /**
+     * Tests all resolving possibilities without brackets which takes words and
+     * with a resolver that converts references to upper case.
+     *
+     * @param template
+     *            the template to process. It must not be {@code null}.
+     * @param resolution
+     *            the expected resolution. It must not be {@code null}.
+     */
+    @Test(dataProvider = "customResolvingWithoutBrackets")
+    public void testCustomResolveWithoutBrackets(String template, String resolution) {
+        testResolve(Interpolation.with("~", c -> !Character.isWhitespace(c), "!"), template, resolution);
+    }
+
+    @SuppressWarnings("javadoc")
+    @DataProvider(name = "customResolvingWithoutBrackets")
+    public Object[][] customResolvingWithoutBrackets() {
+        return new Object[][] {
+            // @formatter:off
+            { "", "" },
+            { "literal", "literal" },
+            { "~reference", "REFERENCE" },
+            { "!~constant", "~constant" },
+            { "Prefixed ~reference", "Prefixed REFERENCE" },
+            { "Prefixed !~constant", "Prefixed ~constant" },
+            { "~reference with suffix", "REFERENCE with suffix" },
+            { "!~constant with suffix", "~constant with suffix" },
+            { "Infixed ~reference here.", "Infixed REFERENCE here." },
+            { "Infixed !~constant here.", "Infixed ~constant here." },
+            { "A !~constant and ~reference.", "A ~constant and REFERENCE." },
+            { "Some !~special-constant.", "Some ~special-constant." },
+            { "Some ~special-reference.", "Some SPECIAL-REFERENCE." },
+            { "Surrounded!~constant~reference.", "Surrounded~constantREFERENCE." },
+            { "Surrounded~reference!~constant.", "SurroundedREFERENCE~constant." },
+            { "Surrounded~reference~more.", "SurroundedREFERENCEMORE." },
+            { "A ~reference and ~empty one~", "A REFERENCE and EMPTY one" },
+            { "A !~constant and !~empty one~", "A ~constant and ~empty one" },
             // @formatter:on
         };
     }
