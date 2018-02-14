@@ -37,9 +37,9 @@ public interface TemplateFormat {
      * resolves to the same value as the original string.
      *
      * <p>
-     * Implementation should strive for a canonical form of the result that
-     * should be safe with the respect to further extending, e.g., adding a
-     * literal should not produce any references.
+     * If possible with the respect to the nature of the format, implementations
+     * should strive for {@code constant(a) + constant(b)} being equal (at least
+     * semantically) with {@code constant(a + b)}.
      *
      * @param string
      *            the input to represent as a constant. It must not be
