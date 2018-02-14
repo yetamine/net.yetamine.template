@@ -74,7 +74,7 @@ public final class TemplateLiteral implements Template {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see Template#toString()
      */
     @Override
     public String toString() {

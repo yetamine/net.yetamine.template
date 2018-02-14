@@ -150,7 +150,7 @@ final class TemplateDefinitionParsed implements TemplateDefinition {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see Template#toString()
      */
     @Override
     public String toString() {
@@ -199,7 +199,7 @@ final class TemplateDefinitionUnparsed implements TemplateDefinition {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see Template#toString()
      */
     @Override
     public String toString() {

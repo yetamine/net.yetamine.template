@@ -938,11 +938,11 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
         }
 
         /**
-         * @see java.lang.Object#toString()
+         * @see Template#toString()
          */
         @Override
         public String toString() {
-            return ""; // Should not be used anyway!
+            return null; // Not nice, but it should not be used anyway and this indicates it well
         }
 
         /**
