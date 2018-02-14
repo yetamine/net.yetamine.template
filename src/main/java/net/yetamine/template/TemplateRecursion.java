@@ -942,7 +942,7 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
          */
         @Override
         public String toString() {
-            return null; // Not nice, but it should not be used anyway and this indicates it well
+            return ""; // Returning null could be more appropriate, but not nice... so let it be this
         }
 
         /**
