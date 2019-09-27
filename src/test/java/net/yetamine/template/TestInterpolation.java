@@ -42,7 +42,6 @@ public final class TestInterpolation {
         testConstants(Interpolation.standard(), template, constant);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "standardConstants")
     public Object[][] standardConstants() {
         return new Object[][] {
@@ -80,7 +79,6 @@ public final class TestInterpolation {
         testConstants(Interpolation.with("~", "~", "!"), template, constant);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "customConstants")
     public Object[][] customConstants() {
         return new Object[][] {
@@ -118,7 +116,6 @@ public final class TestInterpolation {
         testConstants(Interpolation.with("%", "%"), template, constant);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "unescapableConstants")
     public Object[][] unescapableConstants() {
         return new Object[][] {
@@ -149,7 +146,6 @@ public final class TestInterpolation {
         testResolve(Interpolation.standard(), template, resolution);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "standardResolving")
     public Object[][] standardResolving() {
         return new Object[][] {
@@ -192,7 +188,6 @@ public final class TestInterpolation {
         testResolve(Interpolation.reduced(), template, resolution);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "reducedResolving")
     public Object[][] reducedResolving() {
         return new Object[][] {
@@ -229,7 +224,6 @@ public final class TestInterpolation {
         testResolve(Interpolation.with("~", "~", "!"), template, resolution);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "customResolvingWithBrackets")
     public Object[][] customResolvingWithBrackets() {
         return new Object[][] {
@@ -270,7 +264,6 @@ public final class TestInterpolation {
         testResolve(Interpolation.with("~", c -> !Character.isWhitespace(c), "!"), template, resolution);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "customResolvingWithoutBrackets")
     public Object[][] customResolvingWithoutBrackets() {
         return new Object[][] {
@@ -311,7 +304,6 @@ public final class TestInterpolation {
         testResolve(Interpolation.with("%", "%"), template, resolution);
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "unescapableResolving")
     public Object[][] unescapableResolving() {
         return new Object[][] {

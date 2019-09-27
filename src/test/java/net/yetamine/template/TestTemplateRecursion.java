@@ -119,7 +119,6 @@ public final class TestTemplateRecursion {
         test(templates, TemplateRecursion.with(source).caching(true).build());
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "defaults")
     public Object[][] defaults() {
         final Map<String, String> templates = new LinkedHashMap<>(); // Keep the traversal stable
@@ -174,7 +173,6 @@ public final class TestTemplateRecursion {
         test(templates, TemplateRecursion.with(source).build());
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "fallbacks")
     public Object[][] fallbacks() {
         final Map<String, String> templates = new LinkedHashMap<>(); // Keep the traversal stable
@@ -236,7 +234,6 @@ public final class TestTemplateRecursion {
         test(templates, builderWithOverriddenRecursionFailure(source).caching(true).build());
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "recusionFailure")
     public Object[][] recursionOverrides() {
         final Map<String, String> templates = new LinkedHashMap<>(); // Keep the traversal stable
@@ -320,7 +317,6 @@ public final class TestTemplateRecursion {
         test(templates, TemplateRecursion.with(source).caching(true).build());
     }
 
-    @SuppressWarnings("javadoc")
     @DataProvider(name = "relativePlaceholders")
     public Object[][] relativePlaceholders() {
         final Map<String, String> templates = new LinkedHashMap<>(); // Keep the traversal stable
