@@ -64,9 +64,9 @@ System.out.println(format.resolve("Could not connect to ${url}.", resolver));
 For building this project is needed:
 
 * JDK 8 or newer.
-* Maven 3.3 or newer.
+* Maven 3.6 or newer.
 
-For using the built library is needed:
+For using the library is needed:
 
 * JRE 8 or newer.
 
