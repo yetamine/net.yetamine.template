@@ -76,4 +76,4 @@ For using the library is needed:
 The project is licensed under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0). Contributions to the project are welcome and accepted if they can be incorporated without the need of changing the license or license conditions and terms.
 
 
-[![Yetamine logo](https://github.com/pdolezal/net.yetamine/raw/master/about/Yetamine_small.png "Our logo")](https://github.com/pdolezal/net.yetamine/blob/master/about/Yetamine_large.png)
+[![Yetamine logo](https://github.com/yetamine/yetamine.github.io/raw/master/brand/light/Yetamine_logo_opaque_100x28.png "Our logo")](https://github.com/yetamine/yetamine.github.io/blob/master/brand/light/Yetamine_logo_opaque.svg)
