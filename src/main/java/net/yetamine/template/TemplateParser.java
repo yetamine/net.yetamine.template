@@ -60,6 +60,7 @@ public interface TemplateParser extends Parser<Template> {
      *
      * @see net.yetamine.template.Parser#next()
      */
+    @Override
     default Template next() {
         return next(TemplateFactory.instance());
     }

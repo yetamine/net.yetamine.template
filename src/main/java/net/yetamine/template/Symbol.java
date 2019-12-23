@@ -28,6 +28,7 @@ public interface Symbol {
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     String toString();
 
     /**

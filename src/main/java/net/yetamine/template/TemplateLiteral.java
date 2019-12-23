@@ -100,6 +100,7 @@ public final class TemplateLiteral implements Template {
     /**
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
+    @Override
     public String apply(Function<? super String, String> resolver) {
         return value;
     }

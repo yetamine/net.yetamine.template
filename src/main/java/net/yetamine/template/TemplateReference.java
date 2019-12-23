@@ -107,6 +107,7 @@ public final class TemplateReference implements Template, Symbol {
     /**
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
+    @Override
     public String apply(Function<? super String, String> resolver) {
         final String result = resolver.apply(value);
         return (result != null) ? result : definition;
@@ -115,6 +116,7 @@ public final class TemplateReference implements Template, Symbol {
     /**
      * @see net.yetamine.template.Symbol#value()
      */
+    @Override
     public String value() {
         return value;
     }
@@ -122,6 +124,7 @@ public final class TemplateReference implements Template, Symbol {
     /**
      * @see net.yetamine.template.Symbol#constant()
      */
+    @Override
     public boolean constant() {
         return false;
     }

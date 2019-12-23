@@ -143,6 +143,7 @@ public final class TemplateSequence implements Template {
     /**
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
+    @Override
     public String apply(Function<? super String, String> resolver) {
         Objects.requireNonNull(resolver);
         return Stream.of(fragments).map(fragment -> fragment.apply(resolver)).collect(Collectors.joining());

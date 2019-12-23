@@ -348,6 +348,7 @@ public final class Source {
         /**
          * @see net.yetamine.template.TemplateCallback#skipped(java.lang.String)
          */
+        @Override
         public Boolean skipped(String value) {
             return Boolean.FALSE;
         }
@@ -355,6 +356,7 @@ public final class Source {
         /**
          * @see net.yetamine.template.TemplateCallback#literal(java.lang.String)
          */
+        @Override
         public Boolean literal(String value) {
             return Boolean.TRUE;
         }
@@ -363,6 +365,7 @@ public final class Source {
          * @see net.yetamine.template.TemplateCallback#constant(java.lang.String,
          *      java.lang.String)
          */
+        @Override
         public Boolean constant(String definition, String value) {
             return Boolean.FALSE;
         }
@@ -371,6 +374,7 @@ public final class Source {
          * @see net.yetamine.template.TemplateCallback#reference(java.lang.String,
          *      java.lang.String)
          */
+        @Override
         public Boolean reference(String definition, String reference) {
             return Boolean.FALSE;
         }
@@ -378,6 +382,7 @@ public final class Source {
         /**
          * @see net.yetamine.template.TemplateCallback#none()
          */
+        @Override
         public Boolean none() {
             return Boolean.TRUE;
         }

@@ -279,6 +279,7 @@ public final class Interpolation implements TemplateFormat {
     /**
      * @see net.yetamine.template.TemplateFormat#constant(java.lang.String)
      */
+    @Override
     public String constant(String string) {
         if (escaping.isEmpty()) { // Honor the contract
             throw new UnsupportedOperationException();
@@ -290,6 +291,7 @@ public final class Interpolation implements TemplateFormat {
     /**
      * @see net.yetamine.template.TemplateFormat#reproduction(java.lang.String)
      */
+    @Override
     public Optional<String> reproduction(String string) {
         return escaping.isEmpty() ? Optional.empty() : Optional.of(escape(string));
     }
@@ -297,6 +299,7 @@ public final class Interpolation implements TemplateFormat {
     /**
      * @see net.yetamine.template.TemplateFormat#parser(java.lang.String)
      */
+    @Override
     public TemplateParser parser(String template) {
         return new TokenParser(scanner, template);
     }
@@ -445,6 +448,7 @@ public final class Interpolation implements TemplateFormat {
         /**
          * @see net.yetamine.template.TokenScanner#find(java.lang.String, int)
          */
+        @Override
         public Token<Symbol> find(String input, int offset) {
             final int openingIndex = input.indexOf(opening, offset);
             if (openingIndex == -1) { // No symbol found

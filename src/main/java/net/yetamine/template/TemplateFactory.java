@@ -48,6 +48,7 @@ public final class TemplateFactory implements TemplateCallback<Template> {
     /**
      * @see net.yetamine.template.TemplateCallback#skipped(java.lang.String)
      */
+    @Override
     public Template skipped(String value) {
         return constant(value, "");
     }
@@ -55,6 +56,7 @@ public final class TemplateFactory implements TemplateCallback<Template> {
     /**
      * @see net.yetamine.template.TemplateCallback#literal(java.lang.String)
      */
+    @Override
     public Template literal(String value) {
         return TemplateLiteral.of(value);
     }
@@ -63,6 +65,7 @@ public final class TemplateFactory implements TemplateCallback<Template> {
      * @see net.yetamine.template.TemplateCallback#constant(java.lang.String,
      *      java.lang.String)
      */
+    @Override
     public Template constant(String definition, String value) {
         return TemplateConstant.instance(definition, value);
     }
@@ -71,6 +74,7 @@ public final class TemplateFactory implements TemplateCallback<Template> {
      * @see net.yetamine.template.TemplateCallback#reference(java.lang.String,
      *      java.lang.String)
      */
+    @Override
     public Template reference(String definition, String reference) {
         return TemplateReference.instance(definition, reference);
     }
@@ -78,6 +82,7 @@ public final class TemplateFactory implements TemplateCallback<Template> {
     /**
      * @see net.yetamine.template.TemplateCallback#none()
      */
+    @Override
     public Template none() {
         return null;
     }

@@ -191,6 +191,7 @@ final class TemplateCallbackResolver implements TemplateCallback<String> {
     /**
      * @see net.yetamine.template.TemplateCallback#skipped(java.lang.String)
      */
+    @Override
     public String skipped(String value) {
         return "";
     }
@@ -198,6 +199,7 @@ final class TemplateCallbackResolver implements TemplateCallback<String> {
     /**
      * @see net.yetamine.template.TemplateCallback#literal(java.lang.String)
      */
+    @Override
     public String literal(String value) {
         return value;
     }
@@ -206,6 +208,7 @@ final class TemplateCallbackResolver implements TemplateCallback<String> {
      * @see net.yetamine.template.TemplateCallback#constant(java.lang.String,
      *      java.lang.String)
      */
+    @Override
     public String constant(String definition, String value) {
         return value;
     }
@@ -214,6 +217,7 @@ final class TemplateCallbackResolver implements TemplateCallback<String> {
      * @see net.yetamine.template.TemplateCallback#reference(java.lang.String,
      *      java.lang.String)
      */
+    @Override
     public String reference(String definition, String reference) {
         final String result = resolver.apply(reference);
         return (result != null) ? result : definition;
@@ -222,6 +226,7 @@ final class TemplateCallbackResolver implements TemplateCallback<String> {
     /**
      * @see net.yetamine.template.TemplateCallback#none()
      */
+    @Override
     public String none() {
         return null;
     }

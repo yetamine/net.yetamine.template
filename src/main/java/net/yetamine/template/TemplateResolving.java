@@ -57,6 +57,7 @@ public interface TemplateResolving extends UnaryOperator<String> {
      * @see java.util.function.Function#apply(java.lang.Object)
      * @see TemplateFormat#resolve(String, Function)
      */
+    @Override
     default String apply(String template) {
         return format().resolve(template, resolver());
     }
@@ -124,6 +125,7 @@ final class TemplateResolvingImplementation implements TemplateResolving {
     /**
      * @see net.yetamine.template.TemplateResolving#format()
      */
+    @Override
     public TemplateFormat format() {
         return format;
     }
@@ -131,6 +133,7 @@ final class TemplateResolvingImplementation implements TemplateResolving {
     /**
      * @see net.yetamine.template.TemplateResolving#resolver()
      */
+    @Override
     public Function<? super String, String> resolver() {
         return resolver;
     }

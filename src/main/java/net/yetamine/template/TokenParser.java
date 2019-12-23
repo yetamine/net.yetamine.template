@@ -100,6 +100,7 @@ public final class TokenParser implements TemplateParser {
     /**
      * @see net.yetamine.template.TemplateParser#next(net.yetamine.template.TemplateCallback)
      */
+    @Override
     public <R> R next(TemplateCallback<? extends R> callback) {
         Objects.requireNonNull(callback); // Actually not necessary
         assert ((0 <= position) && (position <= input.length()));
@@ -146,6 +147,7 @@ public final class TokenParser implements TemplateParser {
     /**
      * @see net.yetamine.template.Parser#done()
      */
+    @Override
     public boolean done() {
         return done;
     }
@@ -153,6 +155,7 @@ public final class TokenParser implements TemplateParser {
     /**
      * @see net.yetamine.template.Parser#position()
      */
+    @Override
     public int position() {
         return position;
     }
@@ -160,6 +163,7 @@ public final class TokenParser implements TemplateParser {
     /**
      * @see net.yetamine.template.Parser#input()
      */
+    @Override
     public String input() {
         return input;
     }

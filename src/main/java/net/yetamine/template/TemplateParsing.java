@@ -47,6 +47,7 @@ public final class TemplateParsing<R> implements Parser<R> {
     /**
      * @see net.yetamine.template.Parser#next()
      */
+    @Override
     public R next() {
         return parser.next(callback);
     }
@@ -54,6 +55,7 @@ public final class TemplateParsing<R> implements Parser<R> {
     /**
      * @see net.yetamine.template.Parser#done()
      */
+    @Override
     public boolean done() {
         return parser.done();
     }
@@ -61,6 +63,7 @@ public final class TemplateParsing<R> implements Parser<R> {
     /**
      * @see net.yetamine.template.Parser#position()
      */
+    @Override
     public int position() {
         return parser.position();
     }
@@ -68,6 +71,7 @@ public final class TemplateParsing<R> implements Parser<R> {
     /**
      * @see net.yetamine.template.Parser#input()
      */
+    @Override
     public String input() {
         return parser.input();
     }

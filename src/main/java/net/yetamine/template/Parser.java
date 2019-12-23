@@ -138,6 +138,7 @@ final class ParserIterator<R> implements Iterator<R> {
     /**
      * @see java.util.Iterator#hasNext()
      */
+    @Override
     public boolean hasNext() {
         return !parser.done();
     }
@@ -145,6 +146,7 @@ final class ParserIterator<R> implements Iterator<R> {
     /**
      * @see java.util.Iterator#next()
      */
+    @Override
     public R next() {
         if (parser.done()) {
             throw new NoSuchElementException();

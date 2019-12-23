@@ -99,6 +99,7 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
          *
          * @see java.util.function.Function#apply(java.lang.Object)
          */
+        @Override
         default T apply(String placeholder) {
             return apply(placeholder, null);
         }
@@ -220,6 +221,7 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
         /**
          * @see net.yetamine.template.Template#apply(java.util.function.Function)
          */
+        @Override
         public String apply(Function<? super String, String> resolver) {
             return template.apply(resolver);
         }
@@ -444,6 +446,7 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
      *
      * @see java.util.function.Function#apply(java.lang.Object)
      */
+    @Override
     public String apply(String placeholder) {
         return resolve(linking.apply(placeholder));
     }
@@ -948,6 +951,7 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
         /**
          * @see net.yetamine.template.Template#apply(java.util.function.Function)
          */
+        @Override
         public String apply(Function<? super String, String> resolver) {
             return null;
         }

@@ -160,6 +160,7 @@ final class TemplateDefinitionParsed implements TemplateDefinition {
     /**
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
+    @Override
     public String apply(Function<? super String, String> resolver) {
         return template.apply(resolver);
     }
@@ -167,6 +168,7 @@ final class TemplateDefinitionParsed implements TemplateDefinition {
     /**
      * @see net.yetamine.template.TemplateDefinition#format()
      */
+    @Override
     public TemplateFormat format() {
         return format;
     }
@@ -209,6 +211,7 @@ final class TemplateDefinitionUnparsed implements TemplateDefinition {
     /**
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
+    @Override
     public String apply(Function<? super String, String> resolver) {
         return parsed().apply(resolver);
     }
@@ -216,6 +219,7 @@ final class TemplateDefinitionUnparsed implements TemplateDefinition {
     /**
      * @see net.yetamine.template.TemplateDefinition#format()
      */
+    @Override
     public TemplateFormat format() {
         return format;
     }

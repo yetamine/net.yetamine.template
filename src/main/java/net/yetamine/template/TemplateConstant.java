@@ -107,6 +107,7 @@ public final class TemplateConstant implements Template, Symbol {
     /**
      * @see net.yetamine.template.Template#apply(java.util.function.Function)
      */
+    @Override
     public String apply(Function<? super String, String> resolver) {
         return value;
     }
@@ -114,6 +115,7 @@ public final class TemplateConstant implements Template, Symbol {
     /**
      * @see net.yetamine.template.Symbol#value()
      */
+    @Override
     public String value() {
         return value;
     }
@@ -121,6 +123,7 @@ public final class TemplateConstant implements Template, Symbol {
     /**
      * @see net.yetamine.template.Symbol#constant()
      */
+    @Override
     public boolean constant() {
         return true;
     }

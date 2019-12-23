@@ -69,5 +69,6 @@ public interface Template {
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     String toString();
 }
