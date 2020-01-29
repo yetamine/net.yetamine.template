@@ -185,20 +185,24 @@ public final class TestTemplateRecursion {
         templates.put("${L1.1}", "(L1.1)");
 
         final TemplateRecursion.Source<String> source = TemplateRecursion.source()
-                .onDeliveryMissed(reference -> "missing".equals(reference) ? "not really" : null)
-                .constants(reference -> "constant".equals(reference) ? DEFINITIONS.get(reference) : null)
-                .templates(reference -> {
-                    switch (reference) {
-                        case "override":
-                            return "hidden";
+            .onDeliveryMissed(reference -> "missing".equals(reference)
+                ? "not really"
+                : null)
+            .constants(reference -> "constant".equals(reference)
+                ? DEFINITIONS.get(reference)
+                : null)
+            .templates(reference -> {
+                switch (reference) {
+                    case "override":
+                        return "hidden";
 
-                        case "preserve":
-                            return null;
+                    case "preserve":
+                        return null;
 
-                        default:
-                            return DEFINITIONS.get(reference);
-                    }
-                });
+                    default:
+                        return DEFINITIONS.get(reference);
+                }
+            });
 
         return new Object[][] { { source, templates } };
     }
@@ -282,7 +286,8 @@ public final class TestTemplateRecursion {
      *
      * @return the builder
      */
-    private static TemplateRecursion.Builder<?> builderWithOverriddenRecursionFailure(TemplateRecursion.Source<?> source) {
+    private static TemplateRecursion.Builder<?> builderWithOverriddenRecursionFailure(
+            TemplateRecursion.Source<?> source) {
         return TemplateRecursion.with(source).onRecursionFailure((r, t, d) -> String.format("#%s!", r));
     }
 

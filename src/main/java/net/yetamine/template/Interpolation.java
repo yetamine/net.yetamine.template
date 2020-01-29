@@ -142,7 +142,10 @@ public final class Interpolation implements TemplateFormat {
      *
      * @return the new instance
      */
-    public static TemplateFormat with(String placeholderOpening, IntPredicate placeholderCharacters, String placeholderEscaping) {
+    public static TemplateFormat with(
+            String placeholderOpening,
+            IntPredicate placeholderCharacters,
+            String placeholderEscaping) {
         if (placeholderEscaping.isEmpty()) {
             throw new IllegalArgumentException("Empty escaping sequence not permitted.");
         }
@@ -185,7 +188,11 @@ public final class Interpolation implements TemplateFormat {
      *
      * @return the new instance
      */
-    public static TemplateFormat with(String placeholderOpening, String placeholderClosing, String placeholderEscaping) {
+    public static TemplateFormat with(
+            String placeholderOpening,
+            String placeholderClosing,
+            String placeholderEscaping) {
+
         if (placeholderEscaping.isEmpty()) {
             throw new IllegalArgumentException("Empty escaping sequence not permitted.");
         }
@@ -242,8 +249,8 @@ public final class Interpolation implements TemplateFormat {
     @Override
     public String toString() {
         return (closing != null)
-                ? String.format("Interpolation[opening=%s, escaping=%s, closing=%s]", opening, closing, escaping)
-                : String.format("Interpolation[opening=%s, escaping=%s]", opening, escaping);
+            ? String.format("Interpolation[opening=%s, escaping=%s, closing=%s]", opening, closing, escaping)
+            : String.format("Interpolation[opening=%s, escaping=%s]", opening, escaping);
     }
 
     /**
@@ -358,7 +365,13 @@ public final class Interpolation implements TemplateFormat {
      *
      * @return the index where the closing sequence ends, or -1 if not found
      */
-    private static int reducedClosingScanner(String input, int offset, String opening, String escaping, IntPredicate closing) {
+    private static int reducedClosingScanner(
+            String input,
+            int offset,
+            String opening,
+            String escaping,
+            IntPredicate closing) {
+
         for (int i = offset; i < input.length(); i++) {
             if (!closing.test(input.charAt(i))) {
                 return i;
@@ -373,12 +386,11 @@ public final class Interpolation implements TemplateFormat {
                 continue;
             }
 
-            // @formatter:off
             final int escapingLength = escaping.length();
-            if ((input.regionMatches(i, escaping, 0, escapingLength) && input.regionMatches(i + escapingLength, opening, 0, openingLength))) {
+            if ((input.regionMatches(i, escaping, 0, escapingLength)
+                && input.regionMatches(i + escapingLength, opening, 0, openingLength))) {
                 return i;
             }
-            // @formatter:on
         }
 
         return input.length();
@@ -393,13 +405,10 @@ public final class Interpolation implements TemplateFormat {
      * @return {@code true} if the character is in the set {@code [A-Za-z0-9_]}
      */
     private static boolean isReducedSymbolCharacter(int character) {
-        // @formatter:off
         return ((('a' <= character) && (character <= 'z'))
-                || (('A' <= character) && (character <= 'Z'))
-                || (('0' <= character) && (character <= '9'))
-                || (character == '_')
-               );
-        // @formatter:on
+            || (('A' <= character) && (character <= 'Z'))
+            || (('0' <= character) && (character <= '9'))
+            || (character == '_'));
     }
 
     /**
@@ -433,7 +442,12 @@ public final class Interpolation implements TemplateFormat {
          *            sequence, except for the case of being empty or equal to
          *            it.
          */
-        public SymbolScanner(String symbolOpening, String symbolClosing, ClosingScanner referenceClosingScanner, String symbolEscaping) {
+        public SymbolScanner(
+                String symbolOpening,
+                String symbolClosing,
+                ClosingScanner referenceClosingScanner,
+                String symbolEscaping) {
+
             if (symbolOpening.isEmpty()) {
                 throw new IllegalArgumentException("Opening sequence must not be empty.");
             }

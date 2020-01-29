@@ -109,7 +109,10 @@ final class TemplateResolvingImplementation implements TemplateResolving {
      * @param symbolResolver
      *            the resolver. It must not be {@code null}.
      */
-    public TemplateResolvingImplementation(TemplateFormat templateFormat, Function<? super String, String> symbolResolver) {
+    public TemplateResolvingImplementation(
+            TemplateFormat templateFormat,
+            Function<? super String, String> symbolResolver) {
+
         resolver = Objects.requireNonNull(symbolResolver);
         format = Objects.requireNonNull(templateFormat);
     }

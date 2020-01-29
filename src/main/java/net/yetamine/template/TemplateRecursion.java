@@ -424,7 +424,9 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
      *
      * @return the builder
      */
-    public static Builder<String> with(Function<? super String, String> templates, Function<? super String, String> fallback) {
+    public static Builder<String> with(
+            Function<? super String, String> templates,
+            Function<? super String, String> fallback) {
         return with(source().templates(templates).onDeliveryMissed(fallback));
     }
 
@@ -1264,7 +1266,13 @@ public final class TemplateRecursion<T> implements UnaryOperator<String> {
          *            where a particular vertex was added. It must not be
          *            {@code null}.
          */
-        private void discoverCycles(Consumer<? super Binding<T>> found, Set<Binding<T>> visited, Binding<T> vertex, List<Binding<T>> path, Map<Binding<T>, Integer> depth) {
+        private void discoverCycles(
+                Consumer<? super Binding<T>> found,
+                Set<Binding<T>> visited,
+                Binding<T> vertex,
+                List<Binding<T>> path,
+                Map<Binding<T>, Integer> depth) {
+
             if (visited.contains(vertex)) {
                 return;
             }

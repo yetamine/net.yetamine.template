@@ -21,9 +21,9 @@ import java.util.function.Predicate;
 /**
  * Tools for fast template testing.
  *
- * @deprecated Use {@link Source} instead, which provides all the
- *             original functionality in a more object-oriented manner with a
- *             couple of additional use cases.
+ * @deprecated Use {@link Source} instead, which provides all the original
+ *             functionality in a more object-oriented manner with a couple of
+ *             additional use cases.
  */
 @Deprecated
 public final class TemplateTesting {

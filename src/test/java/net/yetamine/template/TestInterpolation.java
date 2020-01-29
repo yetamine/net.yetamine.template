@@ -45,7 +45,6 @@ public final class TestInterpolation {
     @DataProvider(name = "standardConstants")
     public Object[][] standardConstants() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "${reference}", "$${reference}" },
@@ -62,7 +61,6 @@ public final class TestInterpolation {
             // Following cases have multiple solutions, this one is safer and more consistent with other results
             { "Half-open $${constant and ${more}", "Half-open $$${constant and $${more}" },
             { "Unintended ${reference and ${more}", "Unintended $${reference and $${more}" }
-            // @formatter:on
         };
     }
 
@@ -82,7 +80,6 @@ public final class TestInterpolation {
     @DataProvider(name = "customConstants")
     public Object[][] customConstants() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "~reference~", "!~reference!~" },
@@ -98,7 +95,6 @@ public final class TestInterpolation {
             { "Half-open ~reference", "Half-open !~reference" },
             { "Half-open !~constant and ~more~", "Half-open !!~constant and !~more!~" },
             { "Half-open ~reference and ~more~", "Half-open !~reference and !~more!~" }
-            // @formatter:on
         };
     }
 
@@ -119,7 +115,6 @@ public final class TestInterpolation {
     @DataProvider(name = "unescapableConstants")
     public Object[][] unescapableConstants() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "%reference%", "%reference%" },
@@ -128,7 +123,6 @@ public final class TestInterpolation {
             { "Infixed %reference%.", "Infixed %reference%." },
             { "Half-open %reference", "Half-open %reference" },
             { "Unintended %reference and %more%", "Unintended %reference and %more%" }
-            // @formatter:on
         };
     }
 
@@ -149,7 +143,6 @@ public final class TestInterpolation {
     @DataProvider(name = "standardResolving")
     public Object[][] standardResolving() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "${reference}", "REFERENCE" },
@@ -170,7 +163,6 @@ public final class TestInterpolation {
             { "Half-open $${constant and ${more}", "Half-open ${constant and MORE" },
             { "Unintended ${reference and ${more}", "Unintended REFERENCE AND ${MORE" },
             { "No ${reference on dot${net}", "No REFERENCE ON DOT${NET" }
-            // @formatter:on
         };
     }
 
@@ -191,7 +183,6 @@ public final class TestInterpolation {
     @DataProvider(name = "reducedResolving")
     public Object[][] reducedResolving() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "$reference", "REFERENCE" },
@@ -206,7 +197,6 @@ public final class TestInterpolation {
             { "Surrounded$$constant.", "Surrounded$constant." },
             { "Surrounded$reference.", "SurroundedREFERENCE." },
             { "Surrounded$$constant$reference.", "Surrounded$constantREFERENCE." },
-            // @formatter:on
         };
     }
 
@@ -227,7 +217,6 @@ public final class TestInterpolation {
     @DataProvider(name = "customResolvingWithBrackets")
     public Object[][] customResolvingWithBrackets() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "~reference~", "REFERENCE" },
@@ -246,7 +235,6 @@ public final class TestInterpolation {
             { "Half-open ~reference", "Half-open ~reference" },
             { "Unintended ~reference and ~more~", "Unintended REFERENCE AND more~" },
             { "No ~reference on dot~net~", "No REFERENCE ON DOTnet~" }
-            // @formatter:on
         };
     }
 
@@ -267,7 +255,6 @@ public final class TestInterpolation {
     @DataProvider(name = "customResolvingWithoutBrackets")
     public Object[][] customResolvingWithoutBrackets() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "~reference", "REFERENCE" },
@@ -286,7 +273,6 @@ public final class TestInterpolation {
             { "Surrounded~reference~more.", "SurroundedREFERENCEMORE." },
             { "A ~reference and ~empty one~", "A REFERENCE and EMPTY one" },
             { "A !~constant and !~empty one~", "A ~constant and ~empty one" },
-            // @formatter:on
         };
     }
 
@@ -307,7 +293,6 @@ public final class TestInterpolation {
     @DataProvider(name = "unescapableResolving")
     public Object[][] unescapableResolving() {
         return new Object[][] {
-            // @formatter:off
             { "", "" },
             { "literal", "literal" },
             { "%reference%", "REFERENCE" },
@@ -318,7 +303,6 @@ public final class TestInterpolation {
             { "Half-open %reference", "Half-open %reference" },
             { "Unintended %reference and %more%", "Unintended REFERENCE AND more%" },
             { "No %reference on dot%net%", "No REFERENCE ON DOTnet%" }
-            // @formatter:on
         };
     }
 
